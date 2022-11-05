@@ -29,24 +29,23 @@
                 </div>
             </div>
         </div>   
-        <!-- JPL Mars Space Images - Featured Image -->
-        <div class="container">
-            <div class="row" id="mars-featured-image">
-                <div class="col-md-8 text-white">
-                <h4>Featured Mars Image</h4>
-                    <!-- If Images are False/None/Non-Existent, Then Default to Error Message -->
-                    <img src="{{mars.featured_image | default('static/images/error.png', true) }}" class="img-responsive" style="max-width:100%; max-height: auto;" alt="Mars Featured Image"/>
-                </div>
-                    <!-- Mars Facts -->
-                    <div class="row" id="mars-facts">
-                        <div class="col-md-12-center text-white">
-                            <h4>Mars Facts</h4>
-                            {{mars.facts | safe}}
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+       <!-- Section for Featured Image and Facts table -->
+       <div class="row" id="mars-featured-image">
+        <div class="col-md-8 text-white">
+          <h2>Featured Mars Image</h2>
+          <img src="{{mars.featured_image}}" class="img-responsive" alt="Responsive image"/>
         </div>
+        
+          <!-- Mars Facts -->
+        <div class="col-md-4 text-white">
+          <div class="row" id="mars-facts">
+    		    <h4>Mars Facts</h4>
+   			    {{mars.facts | safe}}
+          </div>
+        </div>
+    </div>
+       
         <!-- Mars Hemispheres -->
         <div class="text-white">
         <h4 style="padding-top: 50px; margin-top: 100px; text-align: center; text-white">Mars Hemispheres</h4>
