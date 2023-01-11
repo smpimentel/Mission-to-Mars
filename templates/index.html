@@ -5,65 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Mission to Mars</title>
-  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head> 
-<body class="cover-container bg-dark text-with">
+<body class="cover-container bg-dark text-white">
     <div class="container">
-        <!-- Jumbotron -->
-        <div class="jumbotron text-center text-white bg-dark">
+        <div class="jumbotron text-center bg-dark">
             <h1 class="p-2 bg-dark text-white"><b>Mission to Mars</b></h1>
-            <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
+            <p>
+              <a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a>
+            </p>
         </div>
-        <!-- NASA Mars News -->
         <div class="container">
             <div class="row" id="mars-news">
                 <div class="col-md-12">
                     <div class="media">
                         <div class="media-body text-white">
                             <h4>Latest Mars News</h4>
-                            <h5 style="color: #fff ">{{mars.news_title}}</h5>
-                            <p style="color: #fff">{{mars.news_paragraph}}</p>
+                            <h5>{{mars.news_title}}</h5>
+                            <p>{{mars.news_paragraph}}</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>   
-
-       <!-- Section for Featured Image and Facts table -->
-       <div class="row" id="mars-featured-image">
-        <div class="col-md-8 text-white">
-          <h2>Featured Mars Image</h2>
-          <img src="{{mars.featured_image}}" class="img-responsive" alt="Responsive image"/>
         </div>
-        
-          <!-- Mars Facts -->
-        <div class="col-md-4 text-white">
-          <div class="row" id="mars-facts">
-    		    <h4>Mars Facts</h4>
-   			    {{mars.facts | safe}}
-          </div>
+        <div class="row" id="mars-featured-image">
+            <div class="col-md-8 text-white">
+              <h2>Featured Mars Image</h2>
+              <img src="{{mars.featured_image}}" class="img-responsive" alt="Featured Mars Image">
+            </div>
+            <div class="col-md-4 text-white" align='center'>
+                <div class="row" id="mars-facts">
+                    <h4>Mars Facts</h4>
+                    {{mars.facts | safe}}
+                </div>
+            </div>
         </div>
-    </div>
-       
-        <!-- Mars Hemispheres -->
         <div class="text-white">
-        <h4 style="padding-top: 50px; margin-top: 100px; text-align: center; text-white">Mars Hemispheres</h4>
-        </div>    
+            <h4 style="padding-top: 50px; margin-top: 100px; text-align: center;">Mars Hemispheres</h4>
+        </div>
         <div class="card-deck">
             <hr>
             <div class="col-md-12">
                 <div class="row" id="mars-hemispheres">
                     {% for hemisphere in mars.hemispheres %}
-                    <div class="col-md-6">
-                        <div class="card text-white bg-primary" style="margin: 30px;">
-                            <!-- If Images are False/None/Non-Existent, Then Default to Error Message -->
-                            <img class="card-img-top" src="{{hemisphere.image_url | default('static/images/error.png', true)}}" alt="..."/>
-                            <div class="card-body">
-                                <p class="card-text">{{hemisphere.title}}</p>
+                        <div class="col-md-6">
+                            <div class="card text-white bg-primary" style="margin: 30px;">
+                                <img class="card-img-top" src="{{hemisphere.image_url | default('static/images/error.png', true)}}" alt="{{hemisphere.title}}">
+                                <div class="card-body">
+                                    <p class="card-text">{{hemisphere.title}}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     {% endfor %}
                 </div>
             </div>
@@ -71,3 +63,5 @@
     </div>
 </body>
 </html>
+
+

@@ -14,14 +14,16 @@ def scrape_all():
 
     # Setting our Title and Paragraph to variables
     news_title, news_paragraph = mars_news(browser)
-
+    # Scrape Hemisphere facts and images
+    hemisphere_images = mars_hemisphere(browser)
     # Run all scraping functions and store results in dictionary
     data = {
       "news_title": news_title,
       "news_paragraph": news_paragraph,
       "featured_image": featured_image(browser),
       "facts": mars_facts(),
-      "last_modified": pendulum.now()
+      "last_modified": pendulum.now(),
+      "hemispheres" : hemisphere_images
     }
     # Stop webdriver and return data
     browser.quit()
@@ -70,7 +72,7 @@ def featured_image(browser):
     # Add try/except for error handling
     try:
         # Find the relative image url
-        img_url_rel = img_soup.find('img', class_='fancybox-image').get('src')
+        img_url_rel = img_soup.find('img', class_='fancybox-image')['src']
 
     except AttributeError:
         return None
@@ -93,9 +95,38 @@ def mars_facts():
     # Assign columns and set index of dataframe
     df.columns=['Description', 'Mars', 'Earth']
     df.set_index('Description', inplace=True)
+    # Convert dataframe into HTML format
+    df = df.to_html()
+    
+    # Center the converted df, add bootstrap
+    return df.replace('<tr>', '<tr align="center">')
 
-    # Convert dataframe into HTML format, add bootstrap
-    return df.to_html()
+def mars_hemisphere(browser):
+    url = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
+    browser.visit(url)
+    hemisphere_img_url = []
+    html = browser.html
+    h_soup = soup(html, 'html.parser')
+
+    # Get the links for each of the 4 hemispheres
+    h_links = h_soup.find_all('h3')
+
+    # Loop throup the the four links to click on the page 
+    # and retrieve the information
+    for h in h_links:
+        h_page = browser.find_by_text(h.text)
+        h_page.click()
+        html = browser.html
+        sp = soup(html, 'html.parser')
+        # Scrape the image link and add the initail part to the link
+        img_url = 'https://astrogeology.usgs.gov/' + str(sp.find('img', class_='wide-image')['src'])
+        # Scrape the title
+        title = sp.find('h2', class_='title').text
+        h_dict = {'image_url' : img_url, 'title' : title}
+        hemisphere_img_url.append(h_dict)
+        browser.back()
+
+    return hemisphere_img_url
 
 
 if __name__ == "__main__":
